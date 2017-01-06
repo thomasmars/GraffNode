@@ -1,0 +1,5 @@
+appImage/app/node_modules
+appImage/app/babel_cache
+appImage/app/WORKNOTES.md
+appImage/app/src/dist
+appImage/app/src/static/js

@@ -1,0 +1,8 @@
+version: '2'
+services:
+  app:
+    build: ./appImage
+    cpu_shares: 100
+    mem_limit: 490000000
+    env_file:
+      - ./production.env
