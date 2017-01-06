@@ -3,3 +3,10 @@
 - NODE_ENV: "production" or "development"
 - SERVER_NAME: host name of mongoose db server
 - SERVER_PORT: port of mongoose db server
+
+
+TODOS:
+
+DONE:
+- set up continuous deployment
+- allow registering beers in db

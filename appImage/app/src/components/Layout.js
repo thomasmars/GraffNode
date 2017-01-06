@@ -7,8 +7,8 @@ export default class Layout extends React.Component {
       <div className="app-container">
         <header>
           <Link to="/">Home</Link>
-          <Link to="/horse">HorsePage</Link>
-          <Link to="/stableHorses">Stable Horses</Link>
+          <Link to="/admin/registerBeer">Register beer</Link>
+          <Link to="/admin/listBeer">List beer</Link>
         </header>
         <div className="app-content">{this.props.children}</div>
         <footer>

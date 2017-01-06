@@ -1,9 +1,9 @@
 import path from 'path'
-import { Server } from 'http'
+import {Server} from 'http'
 import Express from 'express'
 import React from 'react'
-import { renderToString } from 'react-dom/server'
-import { match, RouterContext } from 'react-router'
+import {renderToString} from 'react-dom/server'
+import {match, RouterContext} from 'react-router'
 import routes from '../routes'
 import NotFoundPage from '../components/NotFoundPage'
 import mongoose from 'mongoose'
@@ -16,8 +16,6 @@ import cookieParser from 'cookie-parser'
 import session from 'express-session'
 
 mongoose.connect('mongodb://mongo:27017')
-
-const Horse = mongoose.model('Horse', { name: String })
 const upload = multer()
 
 // initialize the server and configure support for ejs templates
@@ -33,41 +31,48 @@ const secret = process.env.PASSPORT_SECRET || 'secret';
 app.use(Express.static(path.resolve('.', 'src', 'static')));
 
 app.use(morgan('dev'))
-app.use(cookieParser())
+// app.use(cookieParser())
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+// app.use(bodyParser.urlencoded({ extended: true }))
 
 app.set('view engine', 'ejs')
 app.set('views', path.resolve('.', 'src', 'views'))
 
 // Authentication
-app.use(session({ secret: secret }))
-app.use(passport.initialize())
-app.use(passport.session())
-app.use(flash())
+/*app.use(session({ secret: secret }))
+ app.use(passport.initialize())
+ app.use(passport.session())
+ app.use(flash())*/
+
+const Beer = mongoose.model('Beer', {name: String})
 
 // Handle posts
-app.post('/api/newhorse', upload.array(), (req, res, next) => {
-  // Handle horseName
-  const horseName = req.body.horseName;
-  const horsey = new Horse({
-    name: horseName
-  })
-  horsey.save(() => {})
-  res.json(req.body)
+app.post('/api/new-beer', upload.array(), (req, res, next) => {
+  const name = req.body.name;
+  if (name) {
+    const item = new Beer({
+      name: name
+    })
+    item.save(() => {
+    })
+    res.json('waffles')
+  }
+  else {
+    res.json('no waffles :(')
+  }
 })
 
-app.get('/api/stableHorses', (req, res) => {
-  Horse.find((err, horse) => {
+app.get('/api/get-beer', (req, res) => {
+  Beer.find((err, beer) => {
     if (err) console.log(error)
-    res.json(horse);
+    res.json(beer);
   })
 })
 
 // universal routing and rendering
 app.get('*', (req, res) => {
   match(
-    { routes, location: req.url },
+    {routes, location: req.url},
     (err, redirectLocation, renderProps) => {
 
       // in case of error display the error message
@@ -92,7 +97,7 @@ app.get('*', (req, res) => {
       }
 
       // render the index template with the embedded React markup
-      return res.render('index', { markup });
+      return res.render('index', {markup});
     }
   );
 });
