@@ -20,4 +20,4 @@ deployment:
       - docker push thomasmars/graff-node
       - sh ./replace-environment-variables.sh
       - ecs-cli configure --access-key $ECS_KEY --secret-key $ECS_SECRET --cluster $ECS_CLUSTER --region eu-west-1
-      - ecs-cli compose --file docker-compose.prod.yml --project-name nodeDockerDeploy up
+      - ecs-cli compose --file docker-compose.prod.yml --project-name nodeGraff up
