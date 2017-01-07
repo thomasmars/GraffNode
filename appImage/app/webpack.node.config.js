@@ -8,7 +8,7 @@ fs.readdirSync(path.resolve(__dirname, 'node_modules'))
   .filter(x => ['.bin'].indexOf(x) === -1)
   .forEach(mod => { nodeModules[mod] = `commonjs ${mod}`; });
 
-module.exports = {
+const config = {
   entry: './src/lib/server',
   target: 'node',
   output: {
@@ -40,7 +40,11 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) || JSON.stringify('development')
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) || JSON.stringify('development'),
+      'process.env.SERVER_NAME': JSON.stringify(process.env.SERVER_NAME) || JSON.stringify('localhost'),
+      'process.env.SERVER_PORT': JSON.stringify(process.env.SERVER_PORT) || 85
     })
   ]
 };
+
+module.exports = config;

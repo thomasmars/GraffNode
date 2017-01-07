@@ -2,11 +2,12 @@
 const webpack = require('webpack');
 const path = require('path');
 
-module.exports = {
+const config = {
   entry: {
     'static/js/bundle': path.join(__dirname, 'src', 'app-client.js')
     // 'dist/server': path.join(__dirname, 'src', 'lib', 'server.js')
   },
+  target: 'web',
   output: {
     path: path.join(__dirname, 'src'),
     filename: '[name].js'
@@ -30,3 +31,10 @@ module.exports = {
     })
   ]
 };
+
+
+if (process.env.NODE_ENV !== 'production') {
+  config.devtool = 'eval'
+}
+
+module.exports = config;

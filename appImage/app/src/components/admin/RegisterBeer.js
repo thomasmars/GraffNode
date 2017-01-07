@@ -1,32 +1,34 @@
 import React from 'react'
 import fetch from 'isomorphic-fetch'
+import {beerProperties} from '../../schema/beerSchema'
 
 export default class RegisterBeer extends React.Component {
 
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
 
     this.submitBeer = this.submitBeer.bind(this)
     this.updateInput = this.updateInput.bind(this);
 
-    this.fields = [
-      {type: 'name', label: 'Name'},
-      {type: 'text', label: 'Text'},
-      {type: 'type', label: 'Type'},
-      {type: 'category', label: 'Category'},
-      {type: 'alcoholPercentage', label: 'Alcohol percentage'},
-      {type: 'IBU', label: 'IBU'},
-      {type: 'OG', label: 'OG'},
-      {type: 'servingTemperature', label: 'Serving temperature'}
-    ]
+    this.resetState = Object.keys(beerProperties).reduce((prev, key) => {
+      prev[key] = ''
+      return prev
+    }, {})
 
-    this.state = {
-      fields: this.fields.map(field => {
-        return {
-          [field.type]: ''
-        }
-      })
-    };
+    this.state = this.resetState
+
+    if (this.props && this.props.params && this.props.params.id) {
+      this.populateBeerData(this.props.params.id)
+    }
+  }
+
+  populateBeerData(id) {
+    fetch('http://' + process.env.SERVER_NAME + ':' + process.env.SERVER_PORT + `/api/get-beer/?id=${id}`)
+      .then((response) => {
+        return response.json()
+      }).then((beer) => {
+      this.setState(beer)
+    })
   }
 
   submitBeer() {
@@ -35,44 +37,47 @@ export default class RegisterBeer extends React.Component {
         'Content-Type': 'application/json'
       },
       method: 'POST',
-      body: JSON.stringify(this.state.fields[0])
+      body: JSON.stringify(this.state)
     }).then(() => {
-      this.setState({
-        fields: this.fields.map(field => {
-          return {
-            [field.type]: ''
-          }
-        })
-      })
+      this.setState(this.resetState)
     })
   }
 
-  updateInput(idx, fieldType, e) {
-    const fields = this.state.fields;
-    fields[idx] = {
-      [fieldType]: e.target.value
-    }
-
+  updateInput(key, e) {
     this.setState({
-      fields: fields
+      [key]: e.target.value
     })
+  }
+
+  componentWillReceiveProps() {
+    if (this.props.params && this.props.params.id) {
+      this.populateBeerData(this.props.params.id);
+    }
+    else {
+      this.setState(this.resetState);
+    }
   }
 
   render() {
     return (
       <div>
-        {this.fields.map((field, idx) => {
-          return (
-            <label key={field.type}>{field.label}:
-              <input
-                type="text"
-                value={this.state[field.type]}
-                onChange={this.updateInput.bind(this, idx, [field.type])}
-              />
-            </label>
-          )
-        })}
-        <button onClick={this.submitBeer}>Add new beer</button>
+        <div>
+          Do we have any id ? {this.props.params.id}
+        </div>
+        <div>Register Beer:
+          {Object.keys(this.state).map(key => {
+            return Object.keys(beerProperties).indexOf(key) < 0 ? null : (
+                <label key={key}>{key}:
+                  <input
+                    type="text"
+                    value={this.state[key]}
+                    onChange={this.updateInput.bind(this, key)}
+                  />
+                </label>
+              )
+          })}
+          <button onClick={this.submitBeer}>Add new beer</button>
+        </div>
       </div>
     )
   }

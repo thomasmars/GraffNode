@@ -14,6 +14,7 @@ import flash from 'connect-flash'
 import morgan from 'morgan'
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
+import {beerSchema, beerProperties} from '../schema/beerSchema'
 
 mongoose.connect('mongodb://mongo:27017')
 const upload = multer()
@@ -44,29 +45,67 @@ app.set('views', path.resolve('.', 'src', 'views'))
  app.use(passport.session())
  app.use(flash())*/
 
-const Beer = mongoose.model('Beer', {name: String})
+const Beer = mongoose.model('Beer', beerSchema)
 
 // Handle posts
-app.post('/api/new-beer', upload.array(), (req, res, next) => {
-  const name = req.body.name;
-  if (name) {
-    const item = new Beer({
-      name: name
-    })
-    item.save(() => {
-    })
-    res.json('waffles')
+app.post('/api/new-beer', upload.array(), (req, res) => {
+
+  // Update
+  if (req.body['_id']) {
+    Beer.findByIdAndUpdate(
+      req.body['_id'],
+      {
+        $set: Object.keys(beerProperties).reduce((prev, key) => {
+          prev[key] = req.body[key]
+          return prev
+        }, {})
+      },
+      {new: true},
+      (err, beer) => {
+        if (err) {
+          console.log(err)
+          res.sendStatus(500).json(err)
+        }
+        res.json(beer)
+      })
   }
   else {
-    res.json('no waffles :(')
+    const item = new Beer(
+      req.body
+    )
+    item.save(() => {
+    })
+    res.sendStatus(200);
   }
 })
 
-app.get('/api/get-beer', (req, res) => {
-  Beer.find((err, beer) => {
-    if (err) console.log(error)
-    res.json(beer);
+app.post('/api/delete-beer', upload.array(), (req, res) => {
+  Beer.findById(req.body.id, (err, beer) => {
+    if (err) {
+      console.log(err)
+      res.sendStatus(500).json(err)
+    }
+  }).remove(() => {
+    res.sendStatus(200);
   })
+})
+
+app.get('/api/get-beer', (req, res) => {
+  if (req.query.id) {
+    Beer.findById(req.query.id, (err, beer) => {
+      if (err) {
+        console.log(err)
+        res.sendStatus(500).json(err)
+      }
+      res.json(beer)
+    })
+  }
+  else {
+    Beer.find((err, beer) => {
+      if (err) console.log(error)
+      res.json(beer);
+    })
+  }
 })
 
 // universal routing and rendering
