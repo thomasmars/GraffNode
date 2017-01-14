@@ -14,7 +14,7 @@
     "build": "npm run build:server && npm run build:client",
     "build:dev": "npm run build:server:dev & npm run build:client:dev",
     "serve": "node src/dist/server.js",
-    "serve:dev": "nodemon -L --watch src src/dist/server.js"
+    "serve:dev": "node src/dist/server.js"
   },
   "author": "thomasmars",
   "license": "ISC",

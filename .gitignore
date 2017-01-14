@@ -3,3 +3,4 @@ appImage/app/babel_cache
 appImage/app/WORKNOTES.md
 appImage/app/src/dist
 appImage/app/src/static/js
+/appImage/app/babel_server_cache/

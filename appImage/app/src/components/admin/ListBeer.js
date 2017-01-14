@@ -16,7 +16,7 @@ export default class ListBeer extends React.Component {
   }
 
   getBeers() {
-    fetch('http://' + process.env.SERVER_NAME + ':' + process.env.SERVER_PORT + '/api/get-beer')
+    fetch('/api/get-beer')
       .then((response) => {
         return response.json()
       })
@@ -26,7 +26,7 @@ export default class ListBeer extends React.Component {
   }
 
   deleteBeer(id) {
-    fetch('http://' + process.env.SERVER_NAME + ':' + process.env.SERVER_PORT + '/api/delete-beer', {
+    fetch('/api/delete-beer', {
       headers: {
         'Content-Type': 'application/json'
       },

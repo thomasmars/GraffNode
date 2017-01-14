@@ -15,9 +15,10 @@ import morgan from 'morgan'
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
 import {beerSchema, beerProperties} from '../schema/beerSchema'
+import * as fs from 'fs'
 
 mongoose.connect('mongodb://mongo:27017')
-const upload = multer()
+const upload = multer({ dest: '/usr/appImages/tmp/'})
 
 // initialize the server and configure support for ejs templates
 const app = new Express()
@@ -30,11 +31,12 @@ const secret = process.env.PASSPORT_SECRET || 'secret';
 
 // define the folder that will be used for static assets
 app.use(Express.static(path.resolve('.', 'src', 'static')));
+app.use('/beerImages', Express.static('/usr/appImages/beerImages'))
 
 app.use(morgan('dev'))
 // app.use(cookieParser())
-app.use(bodyParser.json())
-// app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json({ limit: '50mb' }))
+// app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }))
 
 app.set('view engine', 'ejs')
 app.set('views', path.resolve('.', 'src', 'views'))
@@ -46,19 +48,40 @@ app.set('views', path.resolve('.', 'src', 'views'))
  app.use(flash())*/
 
 const Beer = mongoose.model('Beer', beerSchema)
-
 // Handle posts
-app.post('/api/new-beer', upload.array(), (req, res) => {
+app.post('/api/new-beer', upload.any(), (req, res) => {
+  let beerProps = JSON.parse(req.body.beerProps)
+
+  // Handle image
+  if (req.files) {
+    // Give it a human-readable name
+    const fileName = beerProps.name.split(' ').join('-')
+    const filePath = '/usr/appImages/beerImages/'
+    if (!fs.existsSync(filePath)) {
+      fs.mkdirSync(filePath)
+    }
+
+    // TODO determine extension
+    const readStream = fs.createReadStream(req.files[0].path)
+      .pipe(fs.createWriteStream(filePath + fileName + '.png'));
+
+    // Unlink tmp file
+    readStream.on('close', (err, data) => {
+      fs.unlink(req.files[0].path)
+    })
+
+    // Set image path
+    beerProps = Object.assign({}, beerProps, {
+      imagePath: filePath + fileName + '.png'
+    })
+  }
 
   // Update
-  if (req.body['_id']) {
+  if (req.body['_id'] !== '') {
     Beer.findByIdAndUpdate(
       req.body['_id'],
       {
-        $set: Object.keys(beerProperties).reduce((prev, key) => {
-          prev[key] = req.body[key]
-          return prev
-        }, {})
+        $set: beerProps
       },
       {new: true},
       (err, beer) => {
@@ -71,7 +94,7 @@ app.post('/api/new-beer', upload.array(), (req, res) => {
   }
   else {
     const item = new Beer(
-      req.body
+      beerProps
     )
     item.save(() => {
     })
@@ -79,12 +102,18 @@ app.post('/api/new-beer', upload.array(), (req, res) => {
   }
 })
 
-app.post('/api/delete-beer', upload.array(), (req, res) => {
+app.post('/api/delete-beer', (req, res) => {
   Beer.findById(req.body.id, (err, beer) => {
     if (err) {
       console.log(err)
       res.sendStatus(500).json(err)
     }
+
+    // also delete image
+    if (beer.imagePath) {
+      fs.unlink(beer.imagePath)
+    }
+
   }).remove(() => {
     res.sendStatus(200);
   })

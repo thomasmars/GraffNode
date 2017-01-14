@@ -23,6 +23,7 @@ const config = {
       loader: 'babel-loader',
       exclude: /node_modules/,
       query: {
+        cacheDirectory: 'babel_server_cache',
         presets: ['react', 'es2015']
       }
     },

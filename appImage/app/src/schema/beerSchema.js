@@ -12,7 +12,11 @@ const beerProperties = {
   servingTemperature: String
 }
 
-const beerSchema = new Schema(beerProperties)
+const hiddenProps = {
+  imagePath: String
+}
+
+const beerSchema = new Schema(Object.assign({}, beerProperties, hiddenProps))
 
 export {
   beerProperties,

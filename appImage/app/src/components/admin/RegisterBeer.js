@@ -8,12 +8,21 @@ export default class RegisterBeer extends React.Component {
     super(props)
 
     this.submitBeer = this.submitBeer.bind(this)
-    this.updateInput = this.updateInput.bind(this);
+    this.updateInput = this.updateInput.bind(this)
+    this.updateImage = this.updateImage.bind(this)
 
-    this.resetState = Object.keys(beerProperties).reduce((prev, key) => {
-      prev[key] = ''
-      return prev
-    }, {})
+    const beerProps = Object.keys(beerProperties)
+      .reduce((prev, key) => {
+        prev[key] = ''
+        return prev
+      }, {})
+
+    this.resetState = {
+      '_id': '',
+      image: null,
+      imagePreview: null,
+      beerProps
+    }
 
     this.state = this.resetState
 
@@ -23,30 +32,60 @@ export default class RegisterBeer extends React.Component {
   }
 
   populateBeerData(id) {
-    fetch('http://' + process.env.SERVER_NAME + ':' + process.env.SERVER_PORT + `/api/get-beer/?id=${id}`)
+    fetch(`/api/get-beer/?id=${id}`)
       .then((response) => {
         return response.json()
       }).then((beer) => {
-      this.setState(beer)
+
+
+      this.setState({
+        '_id': beer['_id'],
+        beerProps: Object.keys(beerProperties)
+          .reduce((prev, key) => {
+            prev[key] = beer[key]
+            return prev
+          }, {}),
+        imagePreview: beer.imagePath
+      })
     })
   }
 
   submitBeer() {
-    fetch('http://' + process.env.SERVER_NAME + ':' + process.env.SERVER_PORT + '/api/new-beer', {
-      headers: {
-        'Content-Type': 'application/json'
-      },
+    const data = new FormData()
+    data.append('image', this.state.image)
+    data.append('_id', this.state['_id'])
+    data.append('beerProps', JSON.stringify(this.state.beerProps))
+
+    fetch('/api/new-beer', {
       method: 'POST',
-      body: JSON.stringify(this.state)
+      body: data
     }).then(() => {
       this.setState(this.resetState)
     })
   }
 
   updateInput(key, e) {
-    this.setState({
+    const beerProps = Object.assign(this.state.beerProps, {
       [key]: e.target.value
     })
+
+    this.setState({
+      beerProps
+    })
+  }
+
+  updateImage(e) {
+    const image = e.target.files[0]
+    const reader = new FileReader()
+
+    reader.onloadend = () => {
+      this.setState({
+        image: image,
+        imagePreview: reader.result
+      })
+    }
+
+    reader.readAsDataURL(image)
   }
 
   componentWillReceiveProps() {
@@ -59,18 +98,28 @@ export default class RegisterBeer extends React.Component {
   }
 
   render() {
+    const {imagePreview} = this.state;
+    let imagePreviewEl = null;
+    if (imagePreview) {
+      imagePreviewEl = (<img style={{width: '5em'}} src={imagePreview}/>)
+    }
+
     return (
       <div>
         <div>
           Do we have any id ? {this.props.params.id}
         </div>
         <div>Register Beer:
-          {Object.keys(this.state).map(key => {
-            return Object.keys(beerProperties).indexOf(key) < 0 ? null : (
+          <label>
+            {imagePreviewEl}
+            <input type="file" accept="image/*" onChange={this.updateImage}/>
+          </label>
+          {Object.keys(beerProperties).map(key => {
+            return (
                 <label key={key}>{key}:
                   <input
                     type="text"
-                    value={this.state[key]}
+                    value={this.state.beerProps[key]}
                     onChange={this.updateInput.bind(this, key)}
                   />
                 </label>
