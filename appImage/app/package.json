@@ -14,7 +14,7 @@
     "build": "npm run build:server && npm run build:client",
     "build:dev": "npm run build:server:dev & npm run build:client:dev",
     "serve": "node src/dist/server.js",
-    "serve:dev": "node src/dist/server.js"
+    "serve:dev": "nodemon -L --watch src src/dist/server.js"
   },
   "author": "thomasmars",
   "license": "ISC",
@@ -38,7 +38,9 @@
     "passport-local": "^1.0.0",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
-    "react-router": "^3.0.0"
+    "react-router": "^3.0.0",
+    "webpack-dev-middleware": "^1.9.0",
+    "webpack-hot-middleware": "^2.15.0"
   },
   "devDependencies": {
     "babel-loader": "^6.2.10",

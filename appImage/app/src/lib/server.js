@@ -16,18 +16,52 @@ import cookieParser from 'cookie-parser'
 import session from 'express-session'
 import {beerSchema, beerProperties} from '../schema/beerSchema'
 import * as fs from 'fs'
-
-mongoose.connect('mongodb://mongo:27017')
-const upload = multer({ dest: '/usr/appImages/tmp/'})
-
-// initialize the server and configure support for ejs templates
-const app = new Express()
-const server = new Server(app)
+/*import webpackMiddleWare from 'webpack-dev-middleware'
+import webpackHotMiddleWare from 'webpack-hot-middleware'
+import webpack from 'webpack'
+import config from '../../webpack.devserver.config'*/
 
 // Set up environment
 const port = process.env.PORT || 8080;
 const env = process.env.NODE_ENV || 'production';
 const secret = process.env.PASSPORT_SECRET || 'secret';
+const isDeveloping = false //env !== 'production'
+
+if (isDeveloping) {
+  mongoose.set('debug', true)
+}
+
+mongoose.connect('mongodb://mongo:27017')
+const upload = multer({dest: '/usr/appImages/tmp/'})
+
+// initialize the server and configure support for ejs templates
+const app = new Express()
+const server = new Server(app)
+
+
+
+/*if (isDeveloping) {
+  const compiler = webpack(config)
+  const middleware = webpackMiddleWare(compiler, {
+    publicPath: config.output.publicPath,
+    contentBase: 'src',
+    stats: {
+      colors: true,
+      hash: false,
+      timings: true,
+      chunks: false,
+      chunkModules: false,
+      modules: false
+    }
+  })
+
+  app.use(middleware);
+  app.use(webpackHotMiddleware(compiler));
+  app.get('*', function response(req, res) {
+    res.write(middleware.fileSystem.readFileSync(path.join(__dirname, '/../dist/static/index.html')));
+    res.end();
+  });
+}*/
 
 // define the folder that will be used for static assets
 app.use(Express.static(path.resolve('.', 'src', 'static')));
@@ -35,7 +69,7 @@ app.use('/beerImages', Express.static('/usr/appImages/beerImages'))
 
 app.use(morgan('dev'))
 // app.use(cookieParser())
-app.use(bodyParser.json({ limit: '50mb' }))
+app.use(bodyParser.json({limit: '50mb'}))
 // app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }))
 
 app.set('view engine', 'ejs')
@@ -72,7 +106,7 @@ app.post('/api/new-beer', upload.any(), (req, res) => {
 
     // Set image path
     beerProps = Object.assign({}, beerProps, {
-      imagePath: filePath + fileName + '.png'
+      imagePath: '/beerImages/' + fileName + '.png'
     })
   }
 
@@ -110,13 +144,21 @@ app.post('/api/delete-beer', (req, res) => {
     }
 
     // also delete image
-    if (beer.imagePath) {
-      fs.unlink(beer.imagePath)
+    if (beer && beer.imagePath) {
+      fs.unlink(`/usr/appImages${beer.imagePath}`)
     }
 
-  }).remove(() => {
-    res.sendStatus(200);
+    Beer.findByIdAndRemove(req.body.id, (err, beer) => {
+      if (err) {
+        console.log(err)
+        res.sendStatus(500).json(err)
+      }
+
+    }).remove(() => {
+      res.sendStatus(200);
+    })
   })
+
 })
 
 app.get('/api/get-beer', (req, res) => {

@@ -4,13 +4,13 @@ const path = require('path');
 
 const config = {
   entry: {
-    'static/js/bundle': path.join(__dirname, 'src', 'app-client.js')
-    // 'dist/server': path.join(__dirname, 'src', 'lib', 'server.js')
+    app: path.join(__dirname, 'src', 'app-client.js')/*,
+    vendor: ['react', 'react-dom']*/
   },
   target: 'web',
   output: {
-    path: path.join(__dirname, 'src'),
-    filename: '[name].js'
+    path: path.resolve(__dirname, 'src', 'static', 'js'),
+    filename: 'bundle.js'
   },
   module: {
     loaders: [{
@@ -28,7 +28,8 @@ const config = {
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) || JSON.stringify('development'),
       'process.env.SERVER_NAME': JSON.stringify(process.env.SERVER_NAME) || JSON.stringify('localhost'),
       'process.env.SERVER_PORT': JSON.stringify(process.env.SERVER_PORT) || 85
-    })
+    })/*,
+    new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js')*/
   ]
 };
 
