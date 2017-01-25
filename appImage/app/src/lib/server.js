@@ -87,7 +87,7 @@ app.post('/api/new-beer', upload.any(), (req, res) => {
   let beerProps = JSON.parse(req.body.beerProps)
 
   // Handle image
-  if (req.files) {
+  if (req.files && req.files.length) {
     // Give it a human-readable name
     const fileName = beerProps.name.split(' ').join('-')
     const filePath = '/usr/appImages/beerImages/'

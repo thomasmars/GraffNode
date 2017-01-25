@@ -1,11 +1,12 @@
 // webpack.config.js
 const webpack = require('webpack');
 const path = require('path');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const config = {
   entry: {
-    app: path.join(__dirname, 'src', 'app-client.js')/*,
-    vendor: ['react', 'react-dom']*/
+    app: path.resolve(__dirname, 'src', 'app-client.js')/*,
+     vendor: ['react', 'react-dom']*/
   },
   target: 'web',
   output: {
@@ -13,23 +14,32 @@ const config = {
     filename: 'bundle.js'
   },
   module: {
-    loaders: [{
-      test: /\.js$/,
-      include: path.join(__dirname, 'src'),
-      loader: ['babel-loader'],
-      query: {
-        cacheDirectory: 'babel_cache',
-        presets: ['react', 'es2015']
+    loaders: [
+      {
+        test: /\.js$/,
+        include: path.resolve(__dirname, 'src'),
+        loader: 'babel',
+        query: {
+          cacheDirectory: 'babel_cache',
+          presets: ['react', 'es2015']
+        }
+      },
+      {
+        test: /\.css$/,
+        include: path.resolve(__dirname, 'src'),
+        loader: ExtractTextPlugin.extract('style', 'css-loader')
       }
-    }]
+    ]
   },
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) || JSON.stringify('development'),
       'process.env.SERVER_NAME': JSON.stringify(process.env.SERVER_NAME) || JSON.stringify('localhost'),
       'process.env.SERVER_PORT': JSON.stringify(process.env.SERVER_PORT) || 85
-    })/*,
-    new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js')*/
+    }),
+    new ExtractTextPlugin('styles.css')
+    /*,
+     new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js')*/
   ]
 };
 
