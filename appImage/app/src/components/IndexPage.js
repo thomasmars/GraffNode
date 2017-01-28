@@ -1,11 +1,16 @@
 import React from 'react'
 import fetch from 'isomorphic-fetch'
 import './styles/IndexPage.css'
+import BeerCategory from './beer-components/BeerCategory'
+import EventEmitter from 'wolfy87-eventemitter'
+import Header from './header/Header'
 
 export default class ListBeer extends React.Component {
 
   constructor() {
     super()
+
+    this.eventEmitter = new EventEmitter()
 
     this.state = {
       categories: []
@@ -45,19 +50,16 @@ export default class ListBeer extends React.Component {
   render() {
     return (
       <div>
+        <Header/>
         {this.state.categories.map((cat) => {
           const beerCategory = cat.name.toLowerCase().replace(/ /gi, '-')
           return (
-            <div className={`beer-category ${beerCategory}`} key={beerCategory}>
-              <div className="category-header">{cat.name}</div>
-              {cat.beers.map(beer => {
-                return (
-                  <div className="image-container" key={beer._id}>
-                    <img className="image" src={beer.imagePath}/>
-                  </div>
-                )
-              })}
-            </div>
+            <BeerCategory
+              eventEmitter={this.eventEmitter}
+              cat={cat}
+              beerCategory={beerCategory}
+              key={beerCategory}
+            />
           )
         })}
       </div>

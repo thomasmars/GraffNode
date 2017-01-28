@@ -1,0 +1,14 @@
+.category-header {
+  font-size: 2em;
+  background: rgb(156, 58, 65);
+  padding: 0.5em 0;
+}
+
+.beer-category:first-of-type {
+  margin-top: 0;
+}
+
+.beer-category {
+  text-align: center;
+  margin: 1em 0;
+}

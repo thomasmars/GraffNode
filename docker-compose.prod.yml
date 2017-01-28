@@ -5,6 +5,7 @@ services:
       file: docker-compose.base.yml
       service: app
     image: thomasmars/graff-node
+    mem_limit: 490000000
     ports:
       - "80:8080"
     volumes:
@@ -13,10 +14,7 @@ services:
       - mongo
 
   mongo:
+    mem_limit: 490000000
     image: mongo
     volumes:
       - mongodata:/data/db
-
-volumes:
-  mongodata:
-  appImages:

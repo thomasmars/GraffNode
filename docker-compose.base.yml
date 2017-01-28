@@ -3,5 +3,4 @@ services:
   app:
     build: ./appImage
     cpu_shares: 100
-    env_file:
-      - ./production.env
+    # mem_limit: 490000000

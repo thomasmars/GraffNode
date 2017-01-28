@@ -28,6 +28,11 @@ const config = {
         test: /\.css$/,
         include: path.resolve(__dirname, 'src'),
         loader: ExtractTextPlugin.extract('style', 'css-loader')
+      },
+      {
+        test: /\.png$/,
+        include: path.resolve(__dirname, 'src'),
+        loader: 'url-loader?name=img/img-[has:6].[ext]'
       }
     ]
   },
