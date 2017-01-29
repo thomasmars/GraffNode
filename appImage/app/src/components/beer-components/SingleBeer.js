@@ -31,6 +31,24 @@ class SingleBeer extends React.Component {
     })
   }
 
+  parseMarkup(text) {
+    // First parse #string#
+    const replacements = [
+      '<div class="fat-text">',
+      '</div>'
+    ]
+    let idx = 1
+    const parsedBold = text.replace(/#/g, () => {
+      idx ++
+      return replacements[idx % 2]
+    })
+
+    // Parse newlines
+    const parsedBreaks = parsedBold.replace(/\\n/g, '<br />');
+
+    return parsedBreaks;
+  }
+
   render() {
     const imageClasses = `image${this.state.showingImage ? '' : ' hidden'}`
     const beerInfoClasses = `beer-info${this.state.showingImage ? ' hidden' : ''}`
@@ -40,8 +58,11 @@ class SingleBeer extends React.Component {
         <div onClick={this.flipCard.bind(this)} className="image-container">
           <img className={imageClasses} src={this.props.imagePath} />
           <div className={beerInfoClasses}>
-            <div>{this.props.name}</div>
-            <div>{this.props.text}</div>
+            <div className="beer-name">{this.props.name}</div>
+            <div
+              className="beer-text"
+              dangerouslySetInnerHTML={{__html: (this.parseMarkup(this.props.text))}}
+            ></div>
             <div>{this.props.alcoholPercentage}</div>
           </div>
         </div>

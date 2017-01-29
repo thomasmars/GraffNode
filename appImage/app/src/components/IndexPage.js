@@ -58,7 +58,6 @@ export default class ListBeer extends React.Component {
       })
       .then(categories => {
         // Extend category
-        console.log("got categories", categories, this.state.categories);
         const cats = this.state.categories.map(category => {
           const categoryExists = categories.find((cat) => {
             return cat.name === category.name;
