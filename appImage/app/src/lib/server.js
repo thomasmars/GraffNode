@@ -14,12 +14,16 @@ import flash from 'connect-flash'
 import morgan from 'morgan'
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
-import {beerSchema, beerProperties} from '../schema/beerSchema'
 import * as fs from 'fs'
 /*import webpackMiddleWare from 'webpack-dev-middleware'
 import webpackHotMiddleWare from 'webpack-hot-middleware'
 import webpack from 'webpack'
 import config from '../../webpack.devserver.config'*/
+
+// Schemas
+import {beerSchema, beerProperties} from '../schema/beerSchema'
+import { categorySchema } from '../schema/categorySchema'
+
 
 // Set up environment
 const port = process.env.PORT || 8080;
@@ -82,6 +86,7 @@ app.set('views', path.resolve('.', 'src', 'views'))
  app.use(flash())*/
 
 const Beer = mongoose.model('Beer', beerSchema)
+const Category = mongoose.model('Category', categorySchema)
 // Handle posts
 app.post('/api/new-beer', upload.any(), (req, res) => {
   let beerProps = JSON.parse(req.body.beerProps)
@@ -136,6 +141,35 @@ app.post('/api/new-beer', upload.any(), (req, res) => {
   }
 })
 
+app.post('/api/new-category', upload.any(), (req, res) => {
+  let categoryProps = JSON.parse(req.body.categoryProps)
+
+  // Update
+  if (req.body['_id'] !== '') {
+    Category.findByIdAndUpdate(
+      req.body['_id'],
+      {
+        $set: categoryProps
+      },
+      {new: true},
+      (err, category) => {
+        if (err) {
+          console.log(err)
+          res.sendStatus(500).json(err)
+        }
+        res.json(category)
+      })
+  }
+  else {
+    const item = new Category(
+      categoryProps
+    )
+    item.save(() => {
+    })
+    res.sendStatus(200);
+  }
+})
+
 app.post('/api/delete-beer', (req, res) => {
   Beer.findById(req.body.id, (err, beer) => {
     if (err) {
@@ -158,7 +192,25 @@ app.post('/api/delete-beer', (req, res) => {
       res.sendStatus(200);
     })
   })
+})
 
+app.post('/api/delete-category', (req, res) => {
+  Category.findById(req.body.id, (err, category) => {
+    if (err) {
+      console.log(err)
+      res.sendStatus(500).json(err)
+    }
+
+    Category.findByIdAndRemove(req.body.id, (err, category) => {
+      if (err) {
+        console.log(err)
+        res.sendStatus(500).json(err)
+      }
+
+    }).remove(() => {
+      res.sendStatus(200);
+    })
+  })
 })
 
 app.get('/api/get-beer', (req, res) => {
@@ -173,8 +225,26 @@ app.get('/api/get-beer', (req, res) => {
   }
   else {
     Beer.find((err, beer) => {
-      if (err) console.log(error)
+      if (err) console.log(err)
       res.json(beer);
+    })
+  }
+})
+
+app.get('/api/get-category', (req, res) => {
+  if (req.query.id) {
+    Category.findById(req.query.id, (err, category) => {
+      if (err) {
+        console.log(err)
+        res.sendStatus(500).json(err)
+      }
+      res.json(category)
+    })
+  }
+  else {
+    Category.find((err, category) => {
+      if (err) console.log(err)
+      res.json(category);
     })
   }
 })

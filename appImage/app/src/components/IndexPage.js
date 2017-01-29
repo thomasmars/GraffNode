@@ -15,7 +15,11 @@ export default class ListBeer extends React.Component {
     this.state = {
       categories: []
     }
-    this.getBeers()
+  }
+
+  componentWillMount() {
+    this.getBeers();
+    this.getCategoryColors()
   }
 
   getBeers() {
@@ -47,12 +51,41 @@ export default class ListBeer extends React.Component {
       )
   }
 
+  getCategoryColors() {
+    fetch('/api/get-category')
+      .then((response) => {
+        return response.json()
+      })
+      .then(categories => {
+        // Extend category
+        console.log("got categories", categories, this.state.categories);
+        const cats = this.state.categories.map(category => {
+          const categoryExists = categories.find((cat) => {
+            return cat.name === category.name;
+          })
+          if (categoryExists) {
+            category.color = categoryExists.color;
+          }
+
+          return category;
+        })
+
+        this.setState({
+          categories: cats
+        })
+      })
+  }
+
   render() {
     return (
       <div>
         <Header/>
         {this.state.categories.map((cat) => {
           const beerCategory = cat.name.toLowerCase().replace(/ /gi, '-')
+          if (!cat.beers.length) {
+            return null;
+          }
+
           return (
             <BeerCategory
               eventEmitter={this.eventEmitter}

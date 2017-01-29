@@ -21,14 +21,11 @@ export default class RegisterBeer extends React.Component {
       '_id': '',
       image: null,
       imagePreview: null,
-      beerProps
+      beerProps,
+      availableCategories: []
     }
 
     this.state = this.resetState
-
-    if (this.props && this.props.params && this.props.params.id) {
-      this.populateBeerData(this.props.params.id)
-    }
   }
 
   populateBeerData(id) {
@@ -48,6 +45,18 @@ export default class RegisterBeer extends React.Component {
         imagePreview: beer.imagePath
       })
     })
+  }
+
+  populateCategoryData() {
+    fetch('/api/get-category')
+      .then(response => {
+        return response.json()
+      })
+      .then(categories => {
+        this.setState({
+          availableCategories: categories
+        })
+      })
   }
 
   submitBeer() {
@@ -88,6 +97,16 @@ export default class RegisterBeer extends React.Component {
     reader.readAsDataURL(image)
   }
 
+  updateCategory(e) {
+    const beerProps = {
+      ...this.state.beerProps,
+      category: e.target.value
+    }
+    this.setState({
+      beerProps
+    })
+  }
+
   componentWillReceiveProps() {
     if (this.props.params && this.props.params.id) {
       this.populateBeerData(this.props.params.id);
@@ -97,11 +116,38 @@ export default class RegisterBeer extends React.Component {
     }
   }
 
+  componentWillMount() {
+    // Populate beer data
+    if (this.props && this.props.params && this.props.params.id) {
+      this.populateBeerData(this.props.params.id)
+    }
+
+    // Populate category data
+    this.populateCategoryData()
+  }
+
+  categoryExists(categoryName) {
+    return this.state.availableCategories.find(category => {
+      return category.name === categoryName;
+    })
+  }
+
   render() {
     const {imagePreview} = this.state;
     let imagePreviewEl = null;
     if (imagePreview) {
       imagePreviewEl = (<img style={{width: '5em'}} src={imagePreview}/>)
+    }
+
+    let nonExistingCategory = null;
+    if (!this.categoryExists(this.state.beerProps['category'])) {
+      nonExistingCategory = (
+        <option
+          value={this.state.beerProps['category']}
+        >
+          {this.state.beerProps['category']}
+        </option>
+      )
     }
 
     return (
@@ -115,15 +161,43 @@ export default class RegisterBeer extends React.Component {
             <input type="file" accept="image/*" onChange={this.updateImage}/>
           </label>
           {Object.keys(beerProperties).map(key => {
-            return (
-                <label key={key}>{key}:
-                  <input
-                    type="text"
-                    value={this.state.beerProps[key]}
-                    onChange={this.updateInput.bind(this, key)}
-                  />
-                </label>
+            if (key === 'category') {
+              return (
+                <div key={key}>
+                  <select
+                    value={this.state.beerProps['category']}
+                    onChange={this.updateCategory.bind(this)}
+                  >
+                    {nonExistingCategory}
+                    {
+                      this.state.availableCategories.map(category => {
+                        return (
+                          <option
+                            key={category.name}
+                            value={category.name}
+                          >
+                            {category.name}
+                          </option>
+                        )
+                      })
+                    }
+                  </select>
+                </div>
               )
+            }
+            else {
+              return (
+                <div key={key}>
+                  <label>{key}:
+                    <input
+                      type="text"
+                      value={this.state.beerProps[key]}
+                      onChange={this.updateInput.bind(this, key)}
+                    />
+                  </label>
+                </div>
+              )
+            }
           })}
           <button onClick={this.submitBeer}>Add new beer</button>
         </div>

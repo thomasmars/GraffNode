@@ -5,15 +5,22 @@ import Layout from './components/Layout';
 import IndexPage from './components/IndexPage';
 import RegisterBeer from './components/admin/RegisterBeer';
 import ListBeer from './components/admin/ListBeer';
+import CategoryList from './components/admin/lists/CategoryList'
+import CategoryRegistration from './components/admin/registrations/CategoryRegistration'
 import NotFoundPage from './components/NotFoundPage';
 
 const routes = (
   <Route path="/" component={Layout}>
     <IndexRoute component={IndexPage}/>
-    <Route path="/admin/registerBeer" component={RegisterBeer}>
-      <Route path="/admin/registerBeer/:id" component={RegisterBeer} />
+    <Route path="/admin">
+      <IndexRoute component={ListBeer} />
+      <Route path="listBeer" component={ListBeer} />
+      <Route path="categoryList" component={CategoryList} />
+      <Route path="categoryRegistration" component={CategoryRegistration} />
+      <Route path="categoryRegistration/:id" component={CategoryRegistration} />
+      <Route path="registerBeer" component={RegisterBeer} />
+      <Route path="registerBeer/:id" component={RegisterBeer} />
     </Route>
-    <Route path="/admin/listBeer" component={ListBeer} />
     <Route path="*" component={NotFoundPage}/>
   </Route>
 );

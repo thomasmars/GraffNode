@@ -31,7 +31,8 @@ const config = {
         exclude: /node_modules/,
         query: {
           cacheDirectory: 'babel_server_cache',
-          presets: ['react', 'es2015']
+          presets: ['react', 'es2015'],
+          plugins: ['transform-object-rest-spread']
         }
       },
       {

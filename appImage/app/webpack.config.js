@@ -21,7 +21,8 @@ const config = {
         loader: 'babel',
         query: {
           cacheDirectory: 'babel_cache',
-          presets: ['react', 'es2015']
+          presets: ['react', 'es2015'],
+          plugins: ['transform-object-rest-spread']
         }
       },
       {
