@@ -47,6 +47,11 @@ const config = {
         test: /\.png$/,
         include: path.resolve(__dirname, 'src'),
         loader: 'url-loader?name=img/img-[has:6].[ext]'
+      },
+      // Font Definitions
+      {
+        test: /\.(eot|svg|ttf|woff|woff2)+(\?v=\d+\.\d+\.\d+)*$/,
+        loader: 'file-loader?name=public/fonts/[name].[ext]'
       }
     ]
   },

@@ -1,0 +1,25 @@
+.header {
+  text-align: center;
+}
+
+.header-image {
+  width: 50%;
+  margin: 3em 0;
+}
+
+.split-entity {
+  display: inline-block;
+  width: 50%;
+  vertical-align: text-top;
+}
+
+.split-header {
+  font-family: Jaapokki, "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  text-transform: uppercase;
+  font-size: 2em;
+}
+
+.split-info,
+.contact-info {
+  margin: 2em 0;
+}

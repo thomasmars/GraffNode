@@ -1,0 +1,23 @@
+.instagram-link:before,
+.facebook-link:before {
+  font-family: FontAwesome;
+  font-size: 2em;
+}
+
+.instagram-link,
+.facebook-link {
+  padding: 1em;
+  cursor: pointer;
+}
+
+.instagram-link:before {
+  content: "\f16d";
+}
+
+.facebook-link:before {
+  content: "\f09a";
+}
+
+.social-media {
+  position: absolute;
+}
