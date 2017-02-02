@@ -13,8 +13,8 @@
     "build:client:dev": "webpack --watch",
     "build": "npm run build:server && npm run build:client",
     "build:dev": "npm run build:server:dev & npm run build:client:dev",
-    "serve": "node src/dist/server.js",
-    "serve:dev": "nodemon -L --watch src src/dist/server.js"
+    "serve": "node dist/server.js",
+    "serve:dev": "nodemon -L --watch dist dist/server.js"
   },
   "author": "thomasmars",
   "license": "ISC",
@@ -29,8 +29,9 @@
     "cookie-parser": "^1.4.3",
     "ejs": "^2.5.5",
     "express": "^4.14.0",
-    "express-session": "^1.14.2",
+    "express-session": "^1.15.0",
     "isomorphic-fetch": "^2.2.1",
+    "jsonwebtoken": "^7.2.1",
     "mongoose": "^4.7.6",
     "morgan": "^1.7.0",
     "multer": "^1.2.1",

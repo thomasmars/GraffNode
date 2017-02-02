@@ -1,6 +1,6 @@
 import React from 'react'
 import fetch from 'isomorphic-fetch'
-import {categoryProperties} from '../../../schema/categorySchema'
+import {categoryProperties} from '../../../../server/schemas/category'
 
 export default class CategoryRegistration extends React.Component {
 

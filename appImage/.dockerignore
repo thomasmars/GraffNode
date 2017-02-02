@@ -1,9 +1,8 @@
 node_modules
 npm-debug.log
 app/babel_cache
-app/node_modules
 app/npm-debug.log
 app/WORKNOTES.md
 app/src/dist
-app/src/static/js
+app/static/js
 /app/babel_server_cache/

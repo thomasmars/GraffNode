@@ -14,11 +14,11 @@ fs.readdirSync(path.resolve(__dirname, 'node_modules'))
 
 const config = {
   entry: {
-    server: path.resolve(__dirname, 'src', 'lib', 'server')
+    server: path.resolve(__dirname, 'server', 'server')
   },
   target: 'node',
   output: {
-    path: path.resolve(__dirname, 'src', 'dist'),
+    path: path.resolve(__dirname, 'dist'),
     filename: 'server.js'
   },
   externals: nodeModules,
@@ -26,7 +26,11 @@ const config = {
     loaders: [
       {
         test: /\.js$/,
-        include: path.resolve(__dirname, 'src'),
+        include: [
+          path.resolve(__dirname, 'config'),
+          path.resolve(__dirname, 'server'),
+          path.resolve(__dirname, 'client')
+        ],
         loader: 'babel',
         exclude: /node_modules/,
         query: {
@@ -41,12 +45,12 @@ const config = {
       },
       {
         test: /\.css$/,
-        include: path.resolve(__dirname, 'src'),
+        include: [path.resolve(__dirname, 'server'), path.resolve(__dirname, 'client')],
         loader: ExtractTextPlugin.extract('style', 'css-loader')
       },
       {
         test: /\.png$/,
-        include: path.resolve(__dirname, 'src'),
+        include: [path.resolve(__dirname, 'server'), path.resolve(__dirname, 'client')],
         loader: 'url-loader?name=img/img-[has:6].[ext]'
       },
       // Font Definitions

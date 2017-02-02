@@ -1,6 +1,7 @@
 appImage/app/node_modules
 appImage/app/babel_cache
-appImage/app/WORKNOTES.md
-appImage/app/src/dist
-appImage/app/src/static/js
+worklog.md
+appImage/app/dist
 /appImage/app/babel_server_cache/
+appImage/app/static/js
+appImage/app/src

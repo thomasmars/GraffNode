@@ -5,20 +5,25 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const config = {
   entry: {
-    app: path.resolve(__dirname, 'src', 'app-client.js')/*,
+    app: path.resolve(__dirname, 'client', 'app-client.js')/*,
      vendor: ['react', 'react-dom']*/
   },
   target: 'web',
   output: {
-    path: path.resolve(__dirname, 'src', 'static', 'js'),
+    path: path.resolve(__dirname, 'static', 'js'),
     filename: 'bundle.js'
   },
   module: {
     loaders: [
       {
         test: /\.js$/,
-        include: path.resolve(__dirname, 'src'),
+        include: [
+          path.resolve(__dirname, 'client'),
+          path.resolve(__dirname, 'server'),
+          path.resolve(__dirname, 'config'),
+        ],
         loader: 'babel',
+        exclude: /node_modules/,
         query: {
           cacheDirectory: 'babel_cache',
           presets: ['react', 'es2015'],
@@ -27,12 +32,12 @@ const config = {
       },
       {
         test: /\.css$/,
-        include: path.resolve(__dirname, 'src'),
+        include: path.resolve(__dirname, 'client'),
         loader: ExtractTextPlugin.extract('style', 'css-loader')
       },
       {
         test: /\.png$/,
-        include: path.resolve(__dirname, 'src'),
+        include: path.resolve(__dirname, 'client'),
         loader: 'url-loader?name=img/img-[has:6].[ext]'
       },
       // Font Definitions

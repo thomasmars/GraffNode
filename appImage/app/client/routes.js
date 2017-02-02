@@ -1,4 +1,3 @@
-// src/routes.js
 import React from 'react'
 import { Route, IndexRoute } from 'react-router'
 import Layout from './components/Layout';
@@ -8,11 +7,12 @@ import ListBeer from './components/admin/ListBeer';
 import CategoryList from './components/admin/lists/CategoryList'
 import CategoryRegistration from './components/admin/registrations/CategoryRegistration'
 import NotFoundPage from './components/NotFoundPage';
+import AdminLayout from './components/admin/AdminLayout'
 
 const routes = (
   <Route path="/" component={Layout}>
     <IndexRoute component={IndexPage}/>
-    <Route path="/admin">
+    <Route path="/admin" component={AdminLayout}>
       <IndexRoute component={ListBeer} />
       <Route path="listBeer" component={ListBeer} />
       <Route path="categoryList" component={CategoryList} />

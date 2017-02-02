@@ -1,6 +1,6 @@
 import React from 'react'
 import fetch from 'isomorphic-fetch'
-import {beerProperties} from '../../schema/beerSchema'
+import {beerProperties} from '../../../server/schemas/beer'
 
 export default class RegisterBeer extends React.Component {
 
