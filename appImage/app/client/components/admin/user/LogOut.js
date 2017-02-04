@@ -1,34 +1,20 @@
 import React from 'react'
-import fetch from 'isomorphic-fetch'
 
 class LogIn extends React.Component {
   constructor() {
     super()
-  }
 
-  handleInput(inputName, e) {
-    this.setState({
-      [inputName]: e.target.value
-    })
-  }
-
-  handleLogin() {
-    fetch('/login', {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      method: 'POST',
-      body: JSON.stringify(this.state)
-    }).then((res, req) => {
-      if (res.url) {
-        window.location = res.url
-      }
-    })
+    this.state = {
+      username: '',
+      password: '',
+      failedAuth: false
+    }
   }
 
   render() {
     return (
       <div>
+        {this.state.failedAuth && <div className="failed-auth">Failed authentication</div>}
         <div>Log in:</div>
         <label>Username:
           <input onChange={this.handleInput.bind(this, 'username')} type="text"/>

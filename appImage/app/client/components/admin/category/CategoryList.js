@@ -1,13 +1,11 @@
 import React from 'react'
 import fetch from 'isomorphic-fetch'
-import { Link } from 'react-router'
+import {Link} from 'react-router'
 
-export default class ListBeer extends React.Component {
+export default class CategoryList extends React.Component {
 
   constructor() {
     super()
-
-    this.deleteBeer = this.deleteCategory.bind(this)
 
     this.state = {
       categories: []
@@ -28,10 +26,11 @@ export default class ListBeer extends React.Component {
   deleteCategory(id) {
     fetch('/api/delete-category', {
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'x-access-token': window.localStorage.getItem('grafftoken')
       },
       method: 'POST',
-      body: JSON.stringify({ id })
+      body: JSON.stringify({id})
     }).then(() => {
       this.getCategories()
     })
@@ -50,7 +49,9 @@ export default class ListBeer extends React.Component {
                 <li key={category._id}>
                   <span>{category.name}</span>
                   <Link to={`/admin/categoryRegistration/${category._id}`}>Edit beer</Link>
-                  <button onClick={this.deleteCategory.bind(this, category._id)}>Delete beer</button>
+                  <button onClick={this.deleteCategory.bind(this, category._id)}>
+                    Delete category
+                  </button>
                 </li>
               )
             })}

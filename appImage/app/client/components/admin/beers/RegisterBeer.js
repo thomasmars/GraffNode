@@ -1,6 +1,6 @@
 import React from 'react'
 import fetch from 'isomorphic-fetch'
-import {beerProperties} from '../../../server/schemas/beer'
+import {beerProperties} from '../../../../server/schemas/beer'
 
 export default class RegisterBeer extends React.Component {
 
@@ -24,7 +24,6 @@ export default class RegisterBeer extends React.Component {
       beerProps,
       availableCategories: []
     }
-
     this.state = this.resetState
   }
 
@@ -48,8 +47,13 @@ export default class RegisterBeer extends React.Component {
   }
 
   populateCategoryData() {
-    fetch('/api/get-category')
-      .then(response => {
+    fetch('/api/get-category', {
+      headers: {
+        'Content-Type': 'application/json',
+        'x-access-token': window.localStorage.getItem('grafftoken')
+      },
+      method: 'GET'
+    }).then(response => {
         return response.json()
       })
       .then(categories => {
@@ -64,6 +68,7 @@ export default class RegisterBeer extends React.Component {
     data.append('image', this.state.image)
     data.append('_id', this.state['_id'])
     data.append('beerProps', JSON.stringify(this.state.beerProps))
+    data.append('token', JSON.stringify(window.localStorage.getItem('grafftoken')))
 
     fetch('/api/new-beer', {
       method: 'POST',
@@ -110,9 +115,6 @@ export default class RegisterBeer extends React.Component {
   componentWillReceiveProps() {
     if (this.props.params && this.props.params.id) {
       this.populateBeerData(this.props.params.id);
-    }
-    else {
-      this.setState(this.resetState);
     }
   }
 

@@ -32,7 +32,7 @@ export default class CategoryRegistration extends React.Component {
     fetch(`/api/get-category/?id=${id}`)
       .then((response) => {
         return response.json()
-      }).then((category) => {
+      }).then(category => {
 
 
       this.setState({
@@ -50,6 +50,7 @@ export default class CategoryRegistration extends React.Component {
     const data = new FormData()
     data.append('_id', this.state['_id'])
     data.append('categoryProps', JSON.stringify(this.state.categoryProps))
+    data.append('token', JSON.stringify(window.localStorage.getItem('grafftoken')))
 
     fetch('/api/new-category', {
       method: 'POST',

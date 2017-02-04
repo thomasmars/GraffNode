@@ -16,11 +16,9 @@ export default class ListBeer extends React.Component {
   }
 
   getBeers() {
-    fetch('/api/get-beer')
-      .then((response) => {
+    fetch('/api/get-beer').then((response) => {
         return response.json()
-      })
-      .then((beers) => {
+      }).then((beers) => {
         this.setState({beers: beers})
       })
   }
@@ -28,7 +26,8 @@ export default class ListBeer extends React.Component {
   deleteBeer(id) {
     fetch('/api/delete-beer', {
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'x-access-token': window.localStorage.getItem('grafftoken')
       },
       method: 'POST',
       body: JSON.stringify({ id })
