@@ -29,8 +29,26 @@
 
 @media (min-width: 700px) {
   .beer-container {
+    font-size: 1.5em;
+  }
+
+  .beer-text {
+    padding: 2em;
+    font-size: 1.15em;
+  }
+}
+
+@media (min-width: 1000px) {
+  .beer-container {
+    font-size: 2em;
+  }
+}
+
+@media (min-width: 1025px) {
+  .beer-container {
     display: inline-block;
     width: 25%;
+    font-size: 1em;
     margin: 3em 1em;
   }
 

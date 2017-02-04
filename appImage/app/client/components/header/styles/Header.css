@@ -23,7 +23,7 @@
 }
 
 
-@media (min-width: 700px) {
+@media (min-width: 769px) {
   .split-entity {
     display: inline-block;
     width: 50%;
