@@ -1,7 +1,22 @@
-.image-container {
+.beer-container {
   margin: 3em auto;
-  width: 80%;
+  width: 85%;
   position: relative;
+}
+
+.beer-card {
+  transform-style: preserve-3d;
+  transition: transform ease-out 0.25s;
+  box-sizing: border-box;
+  border: 1px solid black;
+}
+
+.beer-card.flipped {
+  transform: rotateY(180deg);
+}
+
+.beer-image {
+  backface-visibility: hidden;
 }
 
 .beer-name {
@@ -13,10 +28,18 @@
 }
 
 @media (min-width: 700px) {
-  .image-container {
+  .beer-container {
     display: inline-block;
     width: 25%;
     margin: 3em 1em;
+  }
+
+  .beer-text {
+    font-size: 1.2em;
+  }
+
+  .beer-info {
+    padding: 1em;
   }
 }
 
@@ -25,14 +48,16 @@
 }
 
 .beer-info {
+  transform: rotateY(180deg);
   position: absolute;
   top: 0;
   width: 100%;
   height: 100%;
   display: flex;
   flex-flow: column;
-
   cursor: pointer;
+  padding: 0.5em;
+  box-sizing: border-box;
 }
 
 .beer-info.hidden {

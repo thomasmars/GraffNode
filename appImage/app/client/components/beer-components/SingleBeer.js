@@ -44,42 +44,45 @@ class SingleBeer extends React.Component {
     }) + '</div>'
 
     // Parse newlines
-    const parsedBreaks = parsedBold.replace(/\\n/g, '<br />');
-
-    return parsedBreaks;
+    return parsedBold.replace(/\\n/g, '<br />');
   }
 
   render() {
-    const imageClasses = `image${this.state.showingImage ? '' : ' hidden'}`
-    const beerInfoClasses = `beer-info${this.state.showingImage ? ' hidden' : ''}`
-
     return (
       (
-        <div onClick={this.flipCard.bind(this)} className="image-container">
-          <img className={imageClasses} src={this.props.imagePath} />
-          <div className={beerInfoClasses}>
-            <div className="beer-name">{this.props.name}</div>
-            <div className="beer-text-wrapper">
-              <div
-                className="beer-text"
-                dangerouslySetInnerHTML={{__html: (this.parseMarkup(this.props.text))}}
-              ></div>
+        <div onClick={this.flipCard.bind(this)} className="beer-container">
+          <div className={`beer-card${this.state.showingImage ? '' : ' flipped'}`}>
+            <div className="beer-image">
+              <img
+                className='image'
+                src={this.props.imagePath}
+              />
             </div>
-            <div className="beer-div">
-              <div className="beer-div-entity">
-                <div className="beer-div-entity-header">Alc.</div>
-                <div>{this.props.alcoholPercentage}</div>
+            <div className='beer-info'>
+              <div className="beer-name">{this.props.name}</div>
+              <div className="beer-text-wrapper">
+                <div
+                  className="beer-text"
+                  dangerouslySetInnerHTML={{__html: (this.parseMarkup(this.props.text))}}
+                ></div>
               </div>
-              <div className="beer-div-entity">
-                <div className="beer-div-entity-header">IBU / OG</div>
-                <div>{this.props.IBU} / {this.props.OG}°P</div>
-              </div>
-              <div className="beer-div-entity">
-                <div className="beer-div-entity-header">Serve at</div>
-                <div>{this.props.servingTemperature} °C</div>
+              <div className="beer-div">
+                <div className="beer-div-entity">
+                  <div className="beer-div-entity-header">Alc.</div>
+                  <div>{this.props.alcoholPercentage}</div>
+                </div>
+                <div className="beer-div-entity">
+                  <div className="beer-div-entity-header">IBU / OG</div>
+                  <div>{this.props.IBU} / {this.props.OG}°P</div>
+                </div>
+                <div className="beer-div-entity">
+                  <div className="beer-div-entity-header">Serve at</div>
+                  <div>{this.props.servingTemperature} °C</div>
+                </div>
               </div>
             </div>
           </div>
+
         </div>
       )
     )
