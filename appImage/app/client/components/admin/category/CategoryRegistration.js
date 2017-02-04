@@ -51,9 +51,11 @@ export default class CategoryRegistration extends React.Component {
     const data = new FormData()
     data.append('_id', this.state['_id'])
     data.append('categoryProps', JSON.stringify(this.state.categoryProps))
-    data.append('token', JSON.stringify(window.localStorage.getItem('grafftoken')))
 
     fetch('/api/new-category', {
+      headers: {
+        'x-access-token': window.localStorage.getItem('grafftoken')
+      },
       method: 'POST',
       body: data
     }).then(() => {

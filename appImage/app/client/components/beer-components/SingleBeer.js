@@ -34,14 +34,14 @@ class SingleBeer extends React.Component {
   parseMarkup(text) {
     // First parse #string#
     const replacements = [
-      '<div class="fat-text">',
-      '</div>'
+      '</div><div class="fat-text">',
+      '</div><div>'
     ]
     let idx = 1
-    const parsedBold = text.replace(/#/g, () => {
+    const parsedBold = '<div>' + text.replace(/#/g, () => {
       idx ++
       return replacements[idx % 2]
-    })
+    }) + '</div>'
 
     // Parse newlines
     const parsedBreaks = parsedBold.replace(/\\n/g, '<br />');
@@ -59,11 +59,26 @@ class SingleBeer extends React.Component {
           <img className={imageClasses} src={this.props.imagePath} />
           <div className={beerInfoClasses}>
             <div className="beer-name">{this.props.name}</div>
-            <div
-              className="beer-text"
-              dangerouslySetInnerHTML={{__html: (this.parseMarkup(this.props.text))}}
-            ></div>
-            <div>{this.props.alcoholPercentage}</div>
+            <div className="beer-text-wrapper">
+              <div
+                className="beer-text"
+                dangerouslySetInnerHTML={{__html: (this.parseMarkup(this.props.text))}}
+              ></div>
+            </div>
+            <div className="beer-div">
+              <div className="beer-div-entity">
+                <div className="beer-div-entity-header">Alc.</div>
+                <div>{this.props.alcoholPercentage}</div>
+              </div>
+              <div className="beer-div-entity">
+                <div className="beer-div-entity-header">IBU / OG</div>
+                <div>{this.props.IBU} / {this.props.OG}°P</div>
+              </div>
+              <div className="beer-div-entity">
+                <div className="beer-div-entity-header">Serve at</div>
+                <div>{this.props.servingTemperature} °C</div>
+              </div>
+            </div>
           </div>
         </div>
       )

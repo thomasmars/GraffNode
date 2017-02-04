@@ -69,9 +69,11 @@ export default class RegisterBeer extends React.Component {
     data.append('image', this.state.image)
     data.append('_id', this.state['_id'])
     data.append('beerProps', JSON.stringify(this.state.beerProps))
-    data.append('token', JSON.stringify(window.localStorage.getItem('grafftoken')))
 
     fetch('/api/new-beer', {
+      headers: {
+        'x-access-token': window.localStorage.getItem('grafftoken')
+      },
       method: 'POST',
       body: data
     }).then(() => {

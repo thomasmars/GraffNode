@@ -10,6 +10,8 @@ services:
       - "80:8080"
     volumes:
       - appImages:/usr/appImages
+    environment:
+      - NODE_ENV=production
     links:
       - mongo
 

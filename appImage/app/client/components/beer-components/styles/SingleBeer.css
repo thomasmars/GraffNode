@@ -1,7 +1,11 @@
 .image-container {
   margin: 3em auto;
-  width: 60%;
+  width: 80%;
   position: relative;
+}
+
+.beer-name {
+  font-size: 2em;
 }
 
 .image {
@@ -35,19 +39,32 @@
   display: none;
 }
 
-.fat-text {
-  display: inline-block;
-  text-transform: uppercase;
-  font-weight: bold;
-}
-
-.beer-name {
-  font-size: 2em;
-}
-
-.beer-text {
+.beer-text-wrapper {
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.beer-text div {
+  display: inline;
+}
+
+.fat-text {
+  display: inline;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.beer-div-entity {
+  display: inline-block;
+  margin: 0 1em;
+}
+
+.beer-div-entity-header {
+  font-weight: bold;
+}
+
+.beer-div-entity-header-separator {
+  margin: 0 0.1em;
 }
