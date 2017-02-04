@@ -1,0 +1,15 @@
+.beer-table {
+  display: table;
+}
+
+.beer-row {
+  display: table-row;
+}
+
+.beer-table-name,
+.beer-edit,
+.beer-delete {
+  display: table-cell;
+  padding: 0.5em;
+  margin: 1em;
+}

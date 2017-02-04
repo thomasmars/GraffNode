@@ -1,5 +1,6 @@
 import React from 'react'
 import fetch from 'isomorphic-fetch'
+import './styles/CreateUser.css'
 
 const NOT_CREATED = 0
 const FAILED_CREATING = 1
@@ -52,13 +53,18 @@ class CreateUser extends React.Component {
           this.state.updated === SUCCESS_CREATING &&
           <div className="password-change-success">Successfully created new user</div>
         }
-        <div>Create new account:</div>
-        <label>Username of the account:
-          <input onChange={this.handleInput.bind(this, 'username')} type="text"/>
-        </label>
-        <label>Password:
-          <input onChange={this.handleInput.bind(this, 'password')} type="password"/>
-        </label>
+        <div>Create new account</div>
+        <div className="user-registration-table">
+          <div className="user-registration-row">
+            <div>Username</div>
+            <input onChange={this.handleInput.bind(this, 'username')} type="text"/>
+          </div>
+          <div className="user-registration-row">
+            <div>Password</div>
+            <input onChange={this.handleInput.bind(this, 'password')} type="password"/>
+          </div>
+
+        </div>
         <button onClick={this.submitChange.bind(this)}>Create new user</button>
       </div>
     )

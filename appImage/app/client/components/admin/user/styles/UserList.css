@@ -1,0 +1,14 @@
+.user-table {
+  display: table;
+}
+
+.user-row {
+  display: table-row;
+}
+
+.user-table-name,
+.user-delete {
+  display: table-cell;
+  padding: 0.5em;
+  margin: 1em;
+}

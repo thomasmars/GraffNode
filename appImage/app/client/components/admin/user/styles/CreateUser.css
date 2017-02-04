@@ -1,0 +1,17 @@
+.user-registration-table {
+  display: table;
+}
+
+.user-registration-row {
+  display: table-row;
+}
+
+.user-registration-row div,
+.user-registration-row input {
+  display: table-cell;
+  margin: 0.5em 0;
+}
+
+.user-registration-row div:first-child {
+  padding-right: 1em;
+}

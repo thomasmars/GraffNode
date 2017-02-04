@@ -1,0 +1,16 @@
+.admin-paths {
+  margin: 2em;
+}
+
+.admin-paths-header {
+  margin: 1em 0;
+}
+
+.admin-paths button,
+.admin-paths a {
+  margin: 0 2em;
+}
+
+.admin-content {
+  margin: 2em;
+}

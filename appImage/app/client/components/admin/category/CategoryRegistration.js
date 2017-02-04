@@ -1,6 +1,7 @@
 import React from 'react'
 import fetch from 'isomorphic-fetch'
 import {categoryProperties} from '../../../../server/schemas/category'
+import './styles/CategoryRegistration.css'
 
 export default class CategoryRegistration extends React.Component {
 
@@ -82,23 +83,22 @@ export default class CategoryRegistration extends React.Component {
   render() {
     return (
       <div>
-        <div>
-          Do we have any id ? {this.props.params.id}
-        </div>
-        <div>Register Category:
+        <div>Register Category</div>
+        <div className="category-registration-table">
           {Object.keys(categoryProperties).map(key => {
             return (
-              <label key={key}>{key}:
+              <div className="category-registration-row" key={key}>
+                <div>{key}</div>
                 <input
                   type="text"
                   value={this.state.categoryProps[key]}
                   onChange={this.updateInput.bind(this, key)}
                 />
-              </label>
+              </div>
             )
           })}
-          <button onClick={this.submitCategory}>Add new category</button>
         </div>
+        <button onClick={this.submitCategory}>Add new category</button>
       </div>
     )
   }

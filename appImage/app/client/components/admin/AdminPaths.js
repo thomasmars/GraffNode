@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router'
+import './styles/AdminPaths.css'
 
 const AdminPaths = ({children}) => {
 
@@ -10,8 +11,8 @@ const AdminPaths = ({children}) => {
 
   return (
     <div>
-      <div>
-        <div>Admin pages:</div>
+      <div className="admin-paths">
+        <div className="admin-paths-header">Admin pages:</div>
         <Link to={`/admin/listBeer`}>Beer list</Link>
         <Link to={`/admin/registerBeer`}>Beer registration</Link>
         <Link to={`/admin/categoryList`}>Category list</Link>
@@ -21,7 +22,7 @@ const AdminPaths = ({children}) => {
         <Link to={`/admin/changePassword`}>Change password</Link>
         <button onClick={logout}>Log Out</button>
       </div>
-      <div>{children}</div>
+      <div className="admin-content">{children}</div>
     </div>
   )
 }

@@ -1,0 +1,15 @@
+.category-table {
+  display: table;
+}
+
+.category-row {
+  display: table-row;
+}
+
+.category-table-name,
+.category-edit,
+.category-delete {
+  display: table-cell;
+  padding: 0.5em;
+  margin: 1em;
+}

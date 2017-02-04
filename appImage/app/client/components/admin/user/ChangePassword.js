@@ -1,5 +1,6 @@
 import React from 'react'
 import fetch from 'isomorphic-fetch'
+import './styles/ChangePassword.css'
 
 const NO_CHANGE = 0
 const FAILED_CHANGE = 1
@@ -56,16 +57,21 @@ class ChangePassword extends React.Component {
           this.state.updated === SUCCESSFULL_CHANGE &&
           <div className="password-change-success">Successfully changed password</div>
         }
-        <div>Change password of account:</div>
-        <label>Username of the account:
-          <input onChange={this.handleInput.bind(this, 'username')} type="text"/>
-        </label>
-        <label>Old password:
-          <input onChange={this.handleInput.bind(this, 'oldPassword')} type="password"/>
-        </label>
-        <label>New password:
-          <input onChange={this.handleInput.bind(this, 'newPassword')} type="password"/>
-        </label>
+        <div>Change password of account</div>
+        <div className="user-change-password-table">
+          <div className="user-change-password-row">
+            <div>Username</div>
+            <input onChange={this.handleInput.bind(this, 'username')} type="text"/>
+          </div>
+          <div className="user-change-password-row">
+            <div>Old password</div>
+            <input onChange={this.handleInput.bind(this, 'oldPassword')} type="password"/>
+          </div>
+          <div className="user-change-password-row">
+            <div>New password</div>
+            <input onChange={this.handleInput.bind(this, 'newPassword')} type="password"/>
+          </div>
+        </div>
         <button onClick={this.submitChange.bind(this)}>Submit password change</button>
       </div>
     )

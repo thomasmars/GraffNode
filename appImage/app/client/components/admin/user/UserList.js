@@ -1,5 +1,6 @@
 import React from 'react'
 import fetch from 'isomorphic-fetch'
+import './styles/UserList.css'
 
 export default class UserList extends React.Component {
 
@@ -43,20 +44,16 @@ export default class UserList extends React.Component {
   render() {
     return (
       <div>
-        <div>
-          Users registered:
-        </div>
-        <div>
-          <ul>
+        <div>Users registered</div>
+        <div className="user-table">
             {this.state.users.map(user => {
               return (
-                <li key={user._id}>
-                  <span>{user.username}</span>
-                  <button onClick={this.deleteUser.bind(this, user._id)}>Delete user</button>
-                </li>
+                <div className="user-row" key={user._id}>
+                  <div className="user-table-name">{user.username}</div>
+                  <button className="user-delete" onClick={this.deleteUser.bind(this, user._id)}>Delete user</button>
+                </div>
               )
             })}
-          </ul>
         </div>
       </div>
     );

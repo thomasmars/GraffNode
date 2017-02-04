@@ -1,0 +1,22 @@
+.beer-registration-table {
+  display: table;
+}
+
+.beer-registration-row {
+  display: table-row;
+}
+
+.beer-registration-row div,
+.beer-registration-row input,
+.beer-registration-row select {
+  display: table-cell;
+  margin: 0.5em 0;
+}
+
+.beer-registration-row div:first-child {
+  padding-right: 1em;
+}
+
+.image-preview {
+  max-width: 5em;
+}

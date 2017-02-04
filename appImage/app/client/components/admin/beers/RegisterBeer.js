@@ -1,6 +1,7 @@
 import React from 'react'
 import fetch from 'isomorphic-fetch'
 import {beerProperties} from '../../../../server/schemas/beer'
+import './styles/RegisterBeer.css'
 
 export default class RegisterBeer extends React.Component {
 
@@ -54,8 +55,8 @@ export default class RegisterBeer extends React.Component {
       },
       method: 'GET'
     }).then(response => {
-        return response.json()
-      })
+      return response.json()
+    })
       .then(categories => {
         this.setState({
           availableCategories: categories
@@ -154,49 +155,50 @@ export default class RegisterBeer extends React.Component {
 
     return (
       <div>
-        <div>
-          Do we have any id ? {this.props.params.id}
-        </div>
-        <div>Register Beer:
-          <label>
-            {imagePreviewEl}
+        <div>Register Beer</div>
+        <div className="beer-registration-table">
+          <div className="beer-registration-row">
+            <div>Beer image</div>
+            {imagePreviewEl && <div className="image-preview">{imagePreviewEl}</div>}
             <input type="file" accept="image/*" onChange={this.updateImage}/>
-          </label>
+          </div>
           {Object.keys(beerProperties).map(key => {
             if (key === 'category') {
               return (
-                <div key={key}>
-                  <select
-                    value={this.state.beerProps['category']}
-                    onChange={this.updateCategory.bind(this)}
-                  >
-                    {nonExistingCategory}
-                    {
-                      this.state.availableCategories.map(category => {
-                        return (
-                          <option
-                            key={category.name}
-                            value={category.name}
-                          >
-                            {category.name}
-                          </option>
-                        )
-                      })
-                    }
-                  </select>
+                <div className="beer-registration-row" key={key}>
+                  <div>{key}</div>
+                  <div>
+                    <select
+                      value={this.state.beerProps['category']}
+                      onChange={this.updateCategory.bind(this)}
+                    >
+                      {nonExistingCategory}
+                      {
+                        this.state.availableCategories.map(category => {
+                          return (
+                            <option
+                              key={category.name}
+                              value={category.name}
+                            >
+                              {category.name}
+                            </option>
+                          )
+                        })
+                      }
+                    </select>
+                  </div>
                 </div>
               )
             }
             else {
               return (
-                <div key={key}>
-                  <label>{key}:
-                    <input
-                      type="text"
-                      value={this.state.beerProps[key]}
-                      onChange={this.updateInput.bind(this, key)}
-                    />
-                  </label>
+                <div className="beer-registration-row" key={key}>
+                  <div>{key}</div>
+                  <input
+                    type="text"
+                    value={this.state.beerProps[key]}
+                    onChange={this.updateInput.bind(this, key)}
+                  />
                 </div>
               )
             }

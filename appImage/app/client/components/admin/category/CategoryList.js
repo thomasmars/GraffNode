@@ -1,6 +1,7 @@
 import React from 'react'
 import fetch from 'isomorphic-fetch'
 import {Link} from 'react-router'
+import './styles/CategoryList.css'
 
 export default class CategoryList extends React.Component {
 
@@ -40,22 +41,28 @@ export default class CategoryList extends React.Component {
     return (
       <div>
         <div>
-          Beers registered:
+          Categories registered:
         </div>
-        <div>
-          <ul>
-            {this.state.categories.map(category => {
-              return (
-                <li key={category._id}>
-                  <span>{category.name}</span>
-                  <Link to={`/admin/categoryRegistration/${category._id}`}>Edit beer</Link>
-                  <button onClick={this.deleteCategory.bind(this, category._id)}>
-                    Delete category
-                  </button>
-                </li>
-              )
-            })}
-          </ul>
+        <div className="category-list">
+          {this.state.categories.map(category => {
+            return (
+              <div className="category-row" key={category._id}>
+                <div className="category-row">{category.name}</div>
+                <Link
+                  className="category-edit"
+                  to={`/admin/categoryRegistration/${category._id}`}
+                >
+                  Edit category
+                </Link>
+                <button
+                  className="category-delete"
+                  onClick={this.deleteCategory.bind(this, category._id)}
+                >
+                  Delete category
+                </button>
+              </div>
+            )
+          })}
         </div>
       </div>
     );

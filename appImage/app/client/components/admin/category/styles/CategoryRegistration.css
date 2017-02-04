@@ -1,0 +1,17 @@
+.category-registration-table {
+  display: table;
+}
+
+.category-registration-row {
+  display: table-row;
+}
+
+.category-registration-row div,
+.category-registration-row input {
+  display: table-cell;
+  margin: 0.5em 0;
+}
+
+.category-registration-row div:first-child {
+  padding-right: 1em;
+}
